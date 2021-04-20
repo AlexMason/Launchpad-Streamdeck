@@ -9,6 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "midi": "^1.0.3"
+    "electron": "^12.0.4",
+    "electron-prebuilt": "^1.4.13",
+    "electron-reloader": "^1.2.1",
+    "midi": "^1.0.3",
+    "open": "^8.0.6",
+    "robotjs": "^0.6.0"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^2.3.5"
   }
 }

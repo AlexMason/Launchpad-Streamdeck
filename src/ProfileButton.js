@@ -2,10 +2,8 @@ const Button = require("./Button");
 const Colors = require("./Colors");
 
 class ProfileButton extends Button {
-  constructor(launchpad, id, color) {
-    super(launchpad, id, color);
-
-    this.toggle();
+  constructor(launchpad, id, options = {}) {
+    super(launchpad, id, options);
   }
 
   execute() {

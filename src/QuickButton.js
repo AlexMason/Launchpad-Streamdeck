@@ -1,14 +1,10 @@
 const Button = require("./Button");
 
 class QuickButton extends Button {
-  constructor(launchpad, id, color) {
-    super(launchpad, id, color);
+  constructor(launchpad, id, options = {}) {
+    super(launchpad, id, options);
 
-    this.toggle();
-  }
-
-  execute() {
-    console.log(`quickBtn[${this.id}]`);
+    //this.toggle();
   }
 }
 

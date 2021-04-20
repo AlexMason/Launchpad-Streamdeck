@@ -7,6 +7,7 @@ const Colors = {
   MAGENTA: 54,
   WHITE: 3,
   GREY: 1,
+  NONE: 0,
 };
 
 module.exports = Colors;

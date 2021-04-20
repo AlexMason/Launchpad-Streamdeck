@@ -6,10 +6,134 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+
+  <link href="./assets/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="./assets/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="./assets/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
+  <div id="profileControl">
+    <div class="btn-group px-2">
+      <button id="profiles" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Profiles
+      </button>
+      <ul id="profileButtonMenu" class="dropdown-menu">
+        <li><a class="dropdown-item active" href="#">Profile 1</a></li>
+        <li><a class="dropdown-item" href="#">Profile 2</a></li>
+        <li><a class="dropdown-item" href="#">Profile 3</a></li>
+        <li><a class="dropdown-item" href="#">Profile 4</a></li>
+        <li><a class="dropdown-item" href="#">Profile 5</a></li>
+        <li><a class="dropdown-item" href="#">Profile 6</a></li>
+        <li><a class="dropdown-item" href="#">Profile 7</a></li>
+        <li><a class="dropdown-item" href="#">Profile 8</a></li>
+      </ul>
+    </div>
+    <div class="btn-group px-2">
+      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Edit Quick Buttons
+      </button>
+      <ul id="quickButtonMenu" class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">#1</a></li>
+        <li><a class="dropdown-item" href="#">#2</a></li>
+        <li><a class="dropdown-item" href="#">#3</a></li>
+        <li><a class="dropdown-item" href="#">#4</a></li>
+        <li><a class="dropdown-item" href="#">#5</a></li>
+        <li><a class="dropdown-item" href="#">#6</a></li>
+        <li><a class="dropdown-item" href="#">#7</a></li>
+        <li><a class="dropdown-item" href="#">#8</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="buttons"></div>
 
+  <div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Update Button</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!--
+          this.type = options.type || "action"; //toggle, action, always on
+          this.action = options.action || "none"; //uri, hotkey
+          this.color = options.color || Colors.WHITE;
+          this.disabledColor = options.disabledColor || Colors.NONE;
+          this.uri = options.uri || "";
+          this.hotkey = options.hotkey || [];
+          this.description = null; -->
+
+          <form class="row">
+            <div class="col-6">
+              <label for="inputType" class="form-label">Button Type</label>
+              <select class="form-select" id="inputType">
+                <option value="toggle">Toggle</option>
+                <option value="action">Action</option>
+                <option value="always on">Always On</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="inputAction" class="form-label">Action Type</label>
+              <select class="form-select" id="inputAction">
+                <option value="none">None (Button Disabled)</option>
+                <option value="uri">Open App/URL</option>
+                <option value="hotkey">Hotkey</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="inputColor" class="form-label">Active Color</label>
+              <select class="form-select" id="inputColor">
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="inputDisabledColor" class="form-label">Disabled Color</label>
+              <select class="form-select" id="inputDisabledColor">
+              </select>
+            </div>
+
+            <div class="col-12 input-group">
+              <div class="input-group-text">
+                <input id="inputCtrlModifier" type="checkbox" value="" class="mt-0 form-check-input"> CTRL
+              </div>
+              <div class="input-group-text">
+                <input id="inputLShiftModifier" type="checkbox" value="" class="mt-0 form-check-input"> L Shift
+              </div>
+              <div class="input-group-text">
+                <input id="inputRShiftModifier" type="checkbox" value="" class="mt-0 form-check-input"> R Shift
+              </div>
+              <div class="input-group-text">
+                <input id="inputAltModifier" type="checkbox" value="" class="mt-0 form-check-input"> Alt
+              </div>
+              <input id="inputHotkey" class="form-control" type="text" placeholder="Hotkey (e.g. f13, numpad_5, space)">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="inputUrl">Open App/URL/Steam</label>
+              <input class="form-control" type="text" id="inputUrl" placeholder="(e.g. steamid://, http://, file://)" />
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="inputDesc">Short Description</label>
+              <input class="form-control" type="text" id="inputDesc" placeholder="Short description for the button." />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveBtn">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Scripts -->
+  <script src="./assets/website.js"></script>
 </body>
+
 
 </html>

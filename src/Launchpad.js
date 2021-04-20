@@ -1,8 +1,10 @@
 const midi = require("midi");
 const ProfileButton = require("./ProfileButton");
 const QuickButton = require("./QuickButton");
+const Button = require("./Button");
 const Colors = require("./Colors");
 const Profile = require("./Profile");
+const fs = require("fs");
 
 class Launchpad {
   input = new midi.Input();
@@ -27,24 +29,27 @@ class Launchpad {
 
     //setup profile & quicklaunch bar & profiles
     for (let i of [...Array(8).keys()]) {
-      let profileButton = new ProfileButton(
-        this,
-        91 + parseInt(i),
-        Colors.WHITE
-      );
-      let quickButton = new QuickButton(
-        this,
-        19 + parseInt(i) * 10,
-        Colors.RED
-      );
+      let profileButton = new ProfileButton(this, 91 + parseInt(i), {
+        color: Colors.WHITE,
+        disabledColor: Colors.GREY,
+      });
+
+      let quickButton = new QuickButton(this, 19 + parseInt(i) * 10, {
+        color: Colors.RED,
+        disabledColor: Colors.RED,
+      });
 
       this.quickButtons.push(quickButton);
       this.profileButtons.push(profileButton);
 
-      this.profiles.push(new Profile(this));
+      this.profiles.push(new Profile(this, i));
     }
 
-    //load save data
+    this.switchProfile(0);
+
+    if (fs.existsSync(__dirname + `\\..\\data\\quickbuttons.json`)) {
+      this.loadQuickButtons();
+    }
   }
 
   listen() {
@@ -54,7 +59,7 @@ class Launchpad {
       //Button down event
       if (value === 127) {
         this.quickButtons.map((btn) => {
-          if (btn.id === buttonId) {
+          if (btn.id === buttonId && btn.action !== "none") {
             btn.execute();
           }
         });
@@ -67,7 +72,7 @@ class Launchpad {
 
         this.profiles[this.activeProfile].grid.map((gridRow) => {
           gridRow.map((btn) => {
-            if (btn.id === buttonId) {
+            if (btn.id === buttonId && btn.action !== "none") {
               btn.execute();
             }
           });
@@ -80,11 +85,11 @@ class Launchpad {
     this.activeProfile = profileId;
     this.resetLed();
 
+    this.profileButtons[profileId].on();
+
     this.profiles[this.activeProfile].grid.map((gridRow) => {
       gridRow.map((btn) => {
-        if (btn.enabled) {
-          btn.on();
-        }
+        btn.enabled ? btn.on() : btn.off();
       });
     });
   }
@@ -104,11 +109,61 @@ class Launchpad {
   ledOff(id) {
     this.output.sendMessage([144, id, 0]);
   }
+
+  getButton(id, profileId = this.activeProfile) {
+    let quickButtons = [19, 29, 39, 49, 59, 69, 79, 89];
+    let button;
+
+    if (quickButtons.includes(id)) {
+      this.quickButtons.forEach((btn) => {
+        if (btn.id === id) {
+          button = btn;
+        }
+      });
+
+      this.saveQuickButtons();
+    } else {
+      this.profiles[profileId].grid.forEach((row) => {
+        row.forEach((btn) => {
+          if (btn.id === id) {
+            button = btn;
+          }
+        });
+      });
+    }
+
+    return button;
+  }
+
+  saveQuickButtons() {
+    let save = JSON.stringify(this.quickButtons, (key, value) => {
+      if (key === "launchpad") return;
+      return value;
+    });
+
+    fs.writeFileSync(__dirname + `\\..\\data\\quickbuttons.json`, save);
+  }
+
+  loadQuickButtons() {
+    let data = JSON.parse(
+      fs.readFileSync(__dirname + `\\..\\data\\quickbuttons.json`)
+    );
+
+    this.quickButtons.map((btn, j) => {
+      this.quickButtons[j] = new QuickButton(this, data[j].id, {
+        enabled: data[j].enabled,
+        type: data[j].type,
+        action: data[j].action,
+        color: data[j].color,
+        disabledColor: data[j].disabledColor,
+        uri: data[j].uri,
+        hotkey: data[j].hotkey,
+        description: data[j].description,
+      });
+
+      this.quickButtons[j].off();
+    });
+  }
 }
 
 module.exports = Launchpad;
-
-let btnObj = {
-  type: "toggle", //toggle, single press, keybind
-  action: "a", //
-};
